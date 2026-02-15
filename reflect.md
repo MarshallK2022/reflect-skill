@@ -31,6 +31,8 @@ Calculate the 5 target dates relative to the anchor date:
 
 For each target date, find notes using these 3 strategies:
 
+**Exclusion**: Skip any files in the `Reflections/` subfolder (the output path configured in Phase 5). Prior reflections should not be gathered via date matching — this prevents self-referential loops where today's reflection cites yesterday's. (Reflections *can* still surface in Phase 2 keyword expansion if they're topically relevant, preserving their compounding value over time.)
+
 ### Strategy A: Daily notes by filename
 
 Search for files matching these naming patterns:
