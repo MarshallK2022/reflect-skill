@@ -22,17 +22,17 @@ The reflection note is automatically linked from your daily note.
 
 ## Installation
 
-1. Copy `reflect.md` to your Claude Code commands directory:
+1. Download `reflect.md` into your Claude Code commands directory:
 
    ```bash
-   # Global (available in all projects)
-   cp reflect.md ~/.claude/commands/reflect.md
-
-   # Or project-level (available only in one project)
-   cp reflect.md .claude/commands/reflect.md
+   mkdir -p ~/.claude/commands
+   curl -o ~/.claude/commands/reflect.md \
+     https://raw.githubusercontent.com/MarshallK2022/reflect-skill/main/reflect.md
    ```
 
-2. Open `~/.claude/commands/reflect.md` (or `.claude/commands/reflect.md`) and edit the **Configuration** section at the top — set your vault path and optionally your reading tag.
+2. Open `~/.claude/commands/reflect.md` and edit the **Configuration** section near the top — replace `/path/to/your/obsidian/vault` with the absolute path to your vault.
+
+3. Start Claude Code and type `/reflect` — it will appear as a slash command.
 
 ## Usage
 
