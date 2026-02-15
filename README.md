@@ -4,6 +4,8 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) command that ana
 
 ## What it produces
 
+<img width="675" height="754" alt="Screenshot 2026-02-15 at 11 38 02 AM" src="https://github.com/user-attachments/assets/b266a20e-d23c-40e9-a403-4e15433f6fa0" />
+
 Each run creates a reflection note in your vault containing:
 
 - **Theme Arc SVGs** — smooth Catmull-Rom curves showing how 1-3 themes evolved across the time slices, with a combined overview and individual detail views in collapsible callouts
