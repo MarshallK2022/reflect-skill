@@ -10,6 +10,14 @@ Before using this command, set these values:
 
 - **VAULT_PATH**: `/path/to/your/obsidian/vault` — the root of your Obsidian vault
 - **READING_TAG** (optional): `[[reading]]` — if your vault has a tag for book quotes/reading wisdom, set it here. Leave empty to skip the reading wisdom search.
+- **EXCLUDED_FOLDERS**: Folders whose contents are never sent to the API. Default list:
+  - `Reflections/`
+  - `Private/`
+  - `Finance/`
+  - `Health/`
+  Edit this list to match your vault. Any file whose path contains a listed folder name is invisible to all phases.
+
+**Privacy notice**: Running this command sends note contents from your Obsidian vault to the Claude API for analysis. Notes in `EXCLUDED_FOLDERS` are never read. Notes with `private: true` frontmatter or a `#private` tag are skipped. Sensitive patterns (SSNs, credit cards, etc.) are redacted before analysis. Your original vault files are never modified.
 
 **Vault path**: `$VAULT_PATH`
 
@@ -31,7 +39,15 @@ Calculate the 5 target dates relative to the anchor date:
 
 For each target date, find notes using these 3 strategies:
 
-**Exclusion**: Skip any files in the `Reflections/` subfolder (the output path configured in Phase 5). Prior reflections should not be gathered via date matching — this prevents self-referential loops where today's reflection cites yesterday's. (Reflections *can* still surface in Phase 2 keyword expansion if they're topically relevant, preserving their compounding value over time.)
+**Exclusion**: Skip any files whose path contains a folder listed in `EXCLUDED_FOLDERS`. This applies to **every phase** — Glob results, Grep results, and Read targets. If a file is in an excluded folder, treat it as invisible. This prevents self-referential loops (Reflections), protects sensitive content (Private, Finance, Health), and respects the user's privacy boundaries.
+
+Exception: Phase 4c reads recent reflections for thinker deduplication — this is exempt since it reads only the "Thinkers to Explore" section.
+
+**Private-note exclusion**: Before reading any note's content, batch-check all candidate files for private markers. Use Grep in `files_with_matches` mode (returns only file paths — private note content never enters the API):
+1. Check for `^private: true` in frontmatter
+2. Check for `#private` anywhere in the note
+
+Remove any matching files from the working set. They are excluded from all subsequent phases.
 
 ### Strategy A: Daily notes by filename
 
@@ -64,7 +80,7 @@ Only follow **one level** of links (don't recurse). Add these linked notes to th
 ## Phase 2: Keyword Expansion
 
 ### Step 1: Read the Phase 1 notes
-Read all notes gathered so far. Keep them organized by which time slice they came from.
+Read all notes gathered so far. Keep them organized by which time slice they came from. After reading, apply sensitive-pattern redaction (see Phase 3) to the in-memory content before extracting keywords — this prevents sensitive patterns from becoming search terms.
 
 ### Step 2: Extract key terms
 From the content of Phase 1 notes, extract:
@@ -76,13 +92,16 @@ From the content of Phase 1 notes, extract:
 Aim for 10-30 keywords total across all time slices.
 
 ### Step 3: Search the vault
-Use Grep to search all `.md` files in the vault for each keyword (or batch them). Find topically related notes regardless of creation date.
+Use Grep to search all `.md` files in the vault for each keyword (or batch them). Find topically related notes regardless of creation date. **Filter out any results in `EXCLUDED_FOLDERS` before proceeding.**
 
 ### Step 3b: Search the reading wisdom archive (optional)
 
-If a READING_TAG is configured above, search for notes containing that tag combined with keywords from Step 2. This surfaces book quotes and reading notes that connect to the current time slices. Include the 2-3 most relevant reading wisdom notes in the final set.
+If a READING_TAG is configured above, search for notes containing that tag combined with keywords from Step 2. This surfaces book quotes and reading notes that connect to the current time slices. Include the 2-3 most relevant reading wisdom notes in the final set. **Filter out any results in `EXCLUDED_FOLDERS` before proceeding.**
 
 If no READING_TAG is configured, skip this step.
+
+### Step 3c: Private-note check for new files
+Batch-check all newly discovered keyword-matched files (from Steps 3 and 3b) for private markers using the same Grep `files_with_matches` check as Phase 1: `^private: true` frontmatter and `#private` tags. Remove matches before proceeding.
 
 ### Step 4: Cap and deduplicate
 - Rank results by how many keywords each file matches
@@ -94,7 +113,15 @@ If no READING_TAG is configured, skip this step.
 
 ## Phase 3: Read & Organize
 
-Read all gathered notes. Organize them into groups:
+Read all gathered notes. After reading each note, apply **sensitive-pattern redaction** to the in-memory content (original vault files are never modified). Regex-replace these patterns with `[REDACTED]`:
+- **SSNs**: `\d{3}-\d{2}-\d{4}`
+- **Credit card numbers**: `\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}`
+- **Account/routing numbers**: 8-12 digit sequences preceded by "account", "routing", or "acct" (case-insensitive)
+- **Phone numbers**: Common formats — `(###) ###-####`, `###-###-####`, `+1##########`, etc.
+- **Email addresses**: `\S+@\S+\.\S+`
+- **IP addresses**: `\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}`
+
+Organize the redacted content into groups:
 1. **By time slice**: Today, Yesterday, 1 Week, 1 Month, 1 Year
 2. **Keyword-matched**: Note which keywords connected them and each note's date (from filename or frontmatter).
 
