@@ -131,6 +131,15 @@ The most valuable section. Cross-pollinate across time slices:
 
 Be specific and cite the actual notes. Don't be generic — the value is in concrete, actionable connections.
 
+### Kairos Moments
+The Greek concept of *kairos* — the opportune moment, as distinct from *chronos* (sequential time). Scan the preceding analysis for three types of signal that something is ripe for action:
+
+- **Convergence**: Multiple independent threads (from different time slices or unrelated notes) pointing at the same idea or action. When 3+ unconnected sources suggest the same thing, the moment may be ripe.
+- **Readiness**: Accumulated preconditions — skills learned, resources gathered, blockers removed, context shifted. Something that wasn't feasible before may be feasible now.
+- **Recurrence**: Ideas or intentions that keep resurfacing across time slices but haven't been acted on. The pattern of recurrence itself is a signal — this thing keeps wanting to happen.
+
+For each kairos signal found, name it concretely: what's ripe, what evidence supports it, and what the first move would be. If no genuine signals exist, say so — don't fabricate urgency.
+
 **Inline linking in Snapshots:** In the Snapshots section, put the wiki link in the time-slice heading itself — not in the body text. Use display text "link" and the note's filename (without `.md`) as the target. Examples:
 
 - `### 1 Week Ago (2026-02-08) ([[2026-02-08|link]])`
