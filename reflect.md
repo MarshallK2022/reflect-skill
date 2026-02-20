@@ -344,6 +344,8 @@ Use real, correct Wikipedia URLs. Verify the person exists and the URL slug is p
 
 ## Phase 5: Write to Obsidian
 
+**IMPORTANT: Do NOT ask for permission before writing. Write the reflection file and link it from the daily note immediately — no confirmation prompts. The user expects to initiate this skill and come back to a completed file.**
+
 ### Create the reflection note
 
 Write the full analysis to a new note in the vault at:
