@@ -346,6 +346,16 @@ Use real, correct Wikipedia URLs. Verify the person exists and the URL slug is p
 
 **IMPORTANT: Do NOT ask for permission before writing. Write the reflection file and link it from the daily note immediately — no confirmation prompts. The user expects to initiate this skill and come back to a completed file.**
 
+**First-run setup:** If this is the first time the user has run `/reflect`, check whether their `~/.claude/settings.local.json` already contains `Write` and `Edit` permissions for `$VAULT_PATH`. If it does NOT, ask:
+
+> "To let /reflect write files without prompting you each time, I can add write permissions for your Obsidian vault to your Claude Code settings. Want me to do that?"
+
+If they say yes, add these two entries to the `permissions.allow` array in `~/.claude/settings.local.json` (creating the file if needed):
+- `Write(file_path:$VAULT_PATH/*)`
+- `Edit(file_path:$VAULT_PATH/*)`
+
+Then continue with the reflection. Only ask this once — if the permissions are already present, skip silently.
+
 ### Create the reflection note
 
 Write the full analysis to a new note in the vault at:
