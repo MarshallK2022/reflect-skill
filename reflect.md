@@ -276,10 +276,10 @@ cp2y = p2.y - (p3.y - p1.y) / 6
 
 **Style elements:**
 - **Title**: "Theme Arcs" centered at top. Font 16px bold, fill `#818cf8`
-- **Legend**: Below the title, centered. Three items: colored circle + theme name, spaced apart. Font 12px, fill matches each theme color. Use `<circle>` and `<text>` elements at roughly y=55.
+- **Legend**: Below the title, centered. Three items: colored circle + theme name, spaced apart. Font 13px **bold**, fill matches each theme color. Use `<circle>` and `<text>` elements at roughly y=55.
 - **Axes**: Light gray lines (`#d1d5db`), stroke-width 1
 - **Y-axis labels**: "1.0" at top, "0.5" at middle, "0.0" at bottom. Font 12px, fill `#6b7280`. Italic sub-labels: "Dominant" near top, "Absent" near bottom (font 10px, fill `#9ca3af`)
-- **X-axis labels**: Time slice names below x-axis (font 11px, fill `#6b7280`). Date in parentheses below (font 10px, fill `#9ca3af`)
+- **X-axis labels**: Time slice names below x-axis (font 12px **bold**, fill `#4b5563`). Date in parentheses below (font 10px, fill `#6b7280`)
 - **Midline**: Dashed at y=190 (0.5), stroke `#9ca3af`, dasharray `6 4`
 - **Gradient fill**: Only Theme 1 (indigo) gets area fill — gradient from `rgba(99, 102, 241, 0.10)` to `rgba(99, 102, 241, 0.02)`. Themes 2 and 3 have no fill (just curves).
 - **Curves**: Each theme's color, stroke-width 3 for Theme 1, stroke-width 2 for Themes 2 and 3. Round linecap/linejoin.
@@ -308,7 +308,7 @@ Each individual SVG uses the same coordinate system as the original single-theme
 - Y formula: `y = 280 - (score × 220)`
 - The theme's own color for curve, points, and labels
 - Gradient area fill in the theme's color (10-15% opacity top, 2-3% bottom)
-- **Point labels included**: short descriptor above/below each point
+- **Point labels included**: short descriptor above/below each point. Font 11px **bold**, fill in the theme's color.
 - Title: "Theme: [NAME]" in the theme's color
 
 **Gradient IDs must be unique** across all 4 SVGs (e.g., `themeArcGrad1`, `themeArcGrad2`, `themeArcGrad3`, `themeArcGradOverview`).
