@@ -71,6 +71,40 @@ Leave empty to skip this step entirely.
 4. **Analyze** — Produces the structured analysis, theme arc SVGs, trade-offs, and thinker recommendations
 5. **Write** — Creates the reflection note and links it from today's daily note
 
+## Privacy
+
+Running this command sends note contents from your Obsidian vault to the Claude API for analysis. Three layers of protection ensure sensitive content stays out:
+
+### Folder exclusions
+
+The `EXCLUDED_FOLDERS` list in the configuration controls which folders are completely invisible to the command. Files in these folders are never read, searched, or sent to the API. Defaults:
+
+- `Reflections/` (prevents self-referential loops)
+- `Private/`
+- `Finance/`
+- `Health/`
+
+Edit this list to match your vault structure. Any file whose path contains a listed folder name is skipped in every phase — Glob results, Grep results, and Read targets.
+
+### Private-note detection
+
+Before reading any note's content, the command checks for private markers:
+
+- `private: true` in frontmatter
+- `#private` tag anywhere in the note
+
+Matching files are removed from the working set before their content is read. The check uses file-path-only matching so private note content never enters the API.
+
+### Sensitive-pattern redaction
+
+After reading notes, the command redacts common sensitive patterns from in-memory content before analysis:
+
+- SSNs (`XXX-XX-XXXX`)
+- Credit card numbers (`XXXX-XXXX-XXXX-XXXX`)
+- Account/routing numbers (8-12 digit sequences preceded by "account", "routing", or "acct")
+
+Redaction happens in memory only — your original vault files are never modified.
+
 ## Customization tips
 
 - **Time slices**: Edit the list in Phase 1 to change which dates are analyzed (e.g., add "6 months ago" or remove "yesterday")
